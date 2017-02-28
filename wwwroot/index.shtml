@@ -5,9 +5,18 @@
     <title>game test</title>
     <style> 
         *{margin:0; padding:0;}
+        p{
+        	position:absolute;
+        	left:10px;
+        	top:10px;
+        	z-index: 99;
+        	font-size:60px;
+        	color:red;
+        }
     </style>
 </head>
 <body>
+	<p>分数：<span id="score">0</span></p>
     <canvas id="canvas" ></canvas>
     <img id="bg" src="images/bg.jpg" style="display:none" alt="">
     <img id="me" src="images/me.png" style="display:none" alt="">

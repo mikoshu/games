@@ -1,4 +1,8 @@
 var people = function(){
+    this.init();
+}
+
+people.prototype.init = function(){
     this.width = 100;
     this.height = 100;
     this.R = 200;
@@ -9,11 +13,11 @@ var people = function(){
     this.changeX = [];
     this.changeY = [];
     this.isTouch = [];
-    this.pre = 100;
-    this.init();
-}
+    this.success = [];
+    this.pre = 200;
+    this.score = 0;
+    this.getScort = 10;
 
-people.prototype.init = function(){
     for(var i=0;i<this.num; i++){
         this.born(i);
     }
@@ -25,7 +29,8 @@ people.prototype.draw = function(){
         ctx.drawImage(document.getElementById('me'),this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
         //ctx.fillRect(this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
         this.boom(i);
-        this.add(i)
+        this.add(i);
+        //console.log(this.changeX[i],)
     }
     
 }
@@ -48,6 +53,7 @@ people.prototype.born = function(i){
     this.changeX[i] = this.x[i];
     this.changeY[i] = this.y[i];
     this.isTouch[i] = false; 
+    this.success[i] = false;
 }
 
 people.prototype.boom = function(i){
@@ -55,7 +61,11 @@ people.prototype.boom = function(i){
     var y = (win_h/2 - this.changeY[i]);
     var x1 = (Me.x - this.changeX[i]);
     var y1 = (Me.y - this.changeY[i]);
-    if(Math.sqrt(x1*x1 + y1*y1) < this.r + Me.r){
+    if(Math.sqrt(x1*x1 + y1*y1) < this.r + Me.r){ // 碰撞检测人物之间
+        if(!this.isTouch[i]){  // 获取得分
+            this.score += this.getScort;
+            document.getElementById('score').innerHTML = this.score;
+        }
         this.isTouch[i] = true;
     }
 
@@ -63,6 +73,12 @@ people.prototype.boom = function(i){
         if(Math.sqrt(x*x + y*y) > this.R + this.r ){
             this.changeX[i] += (win_w/2 - this.x[i])/this.pre;
             this.changeY[i] += (win_h/2 - this.y[i])/this.pre;
+        }else{
+            if(!this.success[i]){
+                star.nowLife = star.nowLife > 10 ? star.nowLife - 10 : 0;
+                this.success[i] = true;
+            }
+            
         }
     }else{
         this.changeX[i] -= (win_w/2 - this.x[i])/this.pre*3;

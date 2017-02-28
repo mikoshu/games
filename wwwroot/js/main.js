@@ -3,21 +3,28 @@
     var ctx = canvas.getContext('2d');
     var win_w = window.innerWidth;
     var win_h = window.innerHeight;
+    var timmer;
     canvas.width = win_w;
     canvas.height = win_h;
 
     var isPlaying = true;
-
-    var  Me = new me();
     var star = new star();
+    var  Me = new me();
     var people = new people();
 
+    function reset(){
+        Me.init();
+        star.init();
+        people.init();
+        document.getElementById('score').innerHTML = '0';
+    }
 
     function loop(){   // loop function 
         ctx.clearRect(0,0,win_w,win_h);
         draw_bg();
-        Me.init();
-        star.init();
+        Me.draw();
+        star.draw();
+        star.lose();
         people.draw();
         if(isPlaying){
             timmer = requestAnimationFrame(loop);

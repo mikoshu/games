@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>game test</title>
+    <style> 
+        *{margin:0; padding:0;}
+    </style>
+</head>
+<body>
+    <canvas id="canvas" ></canvas>
+    <img id="bg" src="images/bg.jpg" style="display:none" alt="">
+    <img id="me" src="images/me.png" style="display:none" alt="">
+    <img id="star" src="images/star.png" style="display: none" alt="">
+
+<script src="js/star.js"></script>
+<script src="js/me.js" ></script>
+<script src="js/people.js"></script>
+<script src="js/main.js" ></script>
+
+</body>
+</html>

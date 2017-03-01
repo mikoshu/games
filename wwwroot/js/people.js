@@ -7,18 +7,21 @@ people.prototype.init = function(){
     this.height = 100*radio;
     this.R = 200*radio;
     this.r = 50*radio;
-    this.num = 2;
+    this.num = 3;
     this.all = 30;
     this.x = [];
     this.y = [];
-    this.changeX = []; // 记录鼠标位置
-    this.changeY = [];
+    this.speed = [];
+    this.baseSpeed = 300; // 基础速度，值越小，速度越快
+    //this.x = []; // 记录鼠标位置x
+    //this.y = []; // 记录鼠标位置y
     this.isTouch = []; // 判断是否和人物碰撞
     this.success = []; // 判断是否到达终点
-    this.count = [];  // 到达终点后计数\
+    this.count = [];  // 到达终点后计数
+    this.blood = []; // 击中后的血迹
+    this.showBlood = [];
     this.attack = 10; // 攻击力
     this.interval = 50; // 设置到达终点切未被打飞的小人每n帧攻击一次
-    this.pre = 200;
     this.score = 0;
     this.getScort = 10;
 
@@ -34,8 +37,8 @@ people.prototype.level = function(score){ // 难度设置
     //     this.pre = 200;
     // }
     if(score > 150){
-        this.num = parseInt(score/50);
-        this.pre -=  parseInt(score/1000);
+        this.num = parseInt(score/150) + 3;
+        this.baseSpeed =  300 - parseInt(score/200)*20;
     } 
     
 
@@ -46,11 +49,14 @@ people.prototype.draw = function(){
     this.level(this.score); 
 
     for(var i=0;i<this.num;i++){
-        ctx.drawImage(document.getElementById('me'),this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
-        ctx.fillRect(this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
+        ctx.drawImage(document.getElementById('me'),this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
+        //ctx.fillRect(this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
         this.boom(i);
         this.add(i);
-        //console.log(this.changeX[i],)
+        if(this.showBlood[i]){
+            this.drowBlood(i,this.blood[i].x,this.blood[i].y);
+        }
+        //console.log(this.x[i],)
     }
     
 }
@@ -68,33 +74,45 @@ people.prototype.born = function(i){
     }else{
         this.y[i] = y*200
     }
+    this.speed[i] = {} // 每个人物速度不同 
+    var interval = Math.random()*200 + this.baseSpeed; 
+    this.speed[i].x = (win_w/2 - this.x[i])/interval;
+    this.speed[i].y = (win_h/2 - this.y[i])/interval;
     //this.x[i] = (Math.random() - 0.5) * 2000 + win_w/2; 
     //this.y[i] = (Math.random() - 0.5) * 2000 + win_h/2;
-    this.changeX[i] = this.x[i];
-    this.changeY[i] = this.y[i];
+    //this.x[i] = this.x[i];
+    //this.y[i] = this.y[i];
     this.isTouch[i] = false; 
     this.success[i] = false;
     this.count[i] = 0;
+    this.showBlood[i] = false;
+    this.blood[i] = {};
 }
 
 people.prototype.boom = function(i){
-    var x = (win_w/2 - this.changeX[i]);
-    var y = (win_h/2 - this.changeY[i]);
-    var x1 = (Me.x - this.changeX[i]);
-    var y1 = (Me.y - this.changeY[i]);
+    var x = (win_w/2 - this.x[i]);
+    var y = (win_h/2 - this.y[i]);
+    var x1 = (Me.x - this.x[i]);
+    var y1 = (Me.y - this.y[i]);
     if(Math.sqrt(x1*x1 + y1*y1) < this.r + Me.r){ // 碰撞检测人物之间
         if(!this.isTouch[i]){  // 获取得分
             this.score += this.getScort;
             document.getElementById('score').innerHTML = this.score;
             shake(); // 震动
+            this.blood[i] = {　// 记录血迹位置
+                x: this.x[i],
+                y: this.y[i],
+                count: 0
+            }
+            this.showBlood[i] = true;
         }
         this.isTouch[i] = true;
     }
 
     if(!this.isTouch[i]){ 
         if(Math.sqrt(x*x + y*y) > this.R + this.r ){
-            this.changeX[i] += (win_w/2 - this.x[i])/this.pre;
-            this.changeY[i] += (win_h/2 - this.y[i])/this.pre;
+            this.x[i] += this.speed[i].x;
+            this.y[i] += this.speed[i].y;
         }else{
             if(!this.success[i]){
                 star.nowLife = star.nowLife > this.attack ? star.nowLife - this.attack : 0;
@@ -109,16 +127,28 @@ people.prototype.boom = function(i){
             
         }
     }else{
-        this.changeX[i] -= (win_w/2 - this.x[i])/this.pre*5;
-        this.changeY[i] -= (win_h/2 - this.y[i])/this.pre*5;
+        this.x[i] -= this.speed[i].x*5;
+        this.y[i] -= this.speed[i].y*5;
     }
 }
 
 people.prototype.add = function(i){
     if(this.isTouch[i]){
-        if(this.changeX[i] < -this.width || this.changeX[i] > win_w || this.changeY[i] < -this.height || this.changeY[i] > win_h ){
+        if(this.x[i] < -this.width - 100 || this.x[i] > win_w+100 || this.y[i] < -this.height-100 || this.y[i] > win_h+100 ){
             this.born(i);
         }
         
     }
+}
+
+people.prototype.drowBlood = function(i,x,y){ // 绘制血迹
+    var r = Math.sqrt(Math.pow(win_w/2-x,2) + Math.pow(win_h/2-y,2));
+    var deg = Math.acos( (x - win_w/2)/r);
+    deg = y < win_h/2 ? deg : -deg; // 判断血液溅射方向
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(-deg);
+    ctx.drawImage(document.getElementById('blood'),0,0,80,30);
+    ctx.translate(0,0);
+    ctx.restore();
 }

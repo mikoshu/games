@@ -54,6 +54,7 @@
     <img id="bg" src="images/bg.jpg" style="display:none" alt="">
     <img id="me" src="images/me.png" style="display:none" alt="">
     <img id="star" src="images/star.png" style="display: none" alt="">
+    <img id="blood" src="images/blood.png" style="display: none" alt="">
 
 <script src="js/star.js"></script>
 <script src="js/me.js" ></script>

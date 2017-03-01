@@ -4,13 +4,31 @@
     var win_w = window.innerWidth;
     var win_h = window.innerHeight;
     var timmer;
+    var isShaked = false;
     canvas.width = win_w;
     canvas.height = win_h;
-
+    window.requestAnimFrame = window.requestAnimationFrame || 
+                              window.webkitRequestAnimationFrame || 
+                              window.mozRequestAnimationFrame || 
+                              window.oRequestAnimationFrame || 
+                              window.msRequestAnimationFrame;
     var isPlaying = true;
+    var radio = 1;
+
+
+    if(typeof(requestAnimationFrame) == 'undefined'){
+        radio = 0.5;
+        win_w = window.innerWidth*radio;
+        win_h = window.innerHeight*radio;
+        canvas.width = win_w;
+        canvas.height = win_h;
+    }
+
     var star = new star();
     var  Me = new me();
     var people = new people();
+
+    
 
     function reset(){
         Me.init();
@@ -26,15 +44,33 @@
         star.draw();
         star.lose();
         people.draw();
-        if(isPlaying){
+        if(isPlaying && typeof(requestAnimationFrame) == 'function' ){
+            alert()
             timmer = requestAnimationFrame(loop);
         }
     }
+
+    if(typeof(requestAnimationFrame) == 'undefined' && isPlaying){
+        timmer = setInterval(loop,20);
+    }
+
+    
+    
 
     function draw_bg(){
         ctx.drawImage(document.getElementById('bg'),0,0,win_w,win_h);
     }
 
+function shake(){
+    if(!isShaked){
+        isShaked = true;
+        canvas.className = 'ani-shake';
+        setTimeout(function(){
+            canvas.className = '';
+        },120)
+    }
+    isShaked = false;
+}
 
 document.addEventListener('touchstart',function(e){
     e.preventDefault();

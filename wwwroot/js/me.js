@@ -3,10 +3,10 @@ var me = function(){
 }
 
 me.prototype.init = function(){
-    this.r = 100;
-    this.R = 200;
-    this.width = 200;
-    this.height = 200;
+    this.r = 100*radio;
+    this.R = 150*radio;
+    this.width = 200*radio;
+    this.height = 200*radio;
     this.x = win_w/2;
     this.y = win_h/2 + this.r + this.height;
     this.speed = 15; // 规定移动速度
@@ -56,18 +56,8 @@ me.prototype.move = function(){
 
     //if(b1<t2 || l1>r2 || t1>b2 || r1<l2){
         if(this.x < this.toX){
-            // if(this.x > this.toX - this.speed){
-            //     this.x = this.toX
-            // }else{
-            //     this.x += this.speed
-            // }
             this.x = this.x > this.toX - this.speed ? this.toX : this.x + this.speed;
         }else{
-            // if(this.x < this.toX + this.speed){
-            //     this.x = this.toX
-            // }else{
-            //     this.x -= this.speed
-            // }
             this.x = this.x < this.toX + this.speed ? this.toX : this.x - this.speed;
         }
         if(this.y < this.toY){
@@ -90,20 +80,37 @@ me.prototype.move = function(){
             this.y = win_h - this.height/2;
         }
         // 中心区域判断
-        if(this.x > win_w/2 - this.R + this.speed && this.x < win_w/2 + this.R -this.speed ){
-            if(this.y < win_h/2 && this.y > win_h/2 - this.R ){
-                this.y = win_h/2 - this.R;
-            }
-            if(this.y > win_h/2 && this.y < win_h/2+this.R){
-                this.y = win_h/2 + this.R;
+        
+
+        // if(this.x > win_w/2 - this.R + this.speed && this.x < win_w/2 + this.R -this.speed ){
+        //     if(this.y < win_h/2 && this.y > win_h/2 - this.R ){
+        //         this.y = win_h/2 - this.R;
+        //     }
+        //     if(this.y > win_h/2 && this.y < win_h/2+this.R){
+        //         this.y = win_h/2 + this.R;
+        //     }
+        // }
+        // if(this.y > win_h/2 - this.R + this.speed && this.y < win_h/2 + this.R - this.speed){
+        //     if(this.x > win_w/2 - this.R && this.x <win_w/2 ){
+        //         this.x =  win_w/2 - this.R
+        //     }
+        //     if(this.x > win_w/2 && this.x < win_w/2+this.R){
+        //         this.x = win_w/2 + this.R;
+        //     }
+        // }
+
+        if(this.x > win_w/2 - this.R  && this.x < win_w/2 + this.R ){
+            var r = Math.sqrt(Math.pow(win_w/2 - this.x,2) + Math.pow(win_h/2 - this.y,2) );
+            if(r < this.r + this.R){
+                var y = Math.sqrt(Math.pow(this.r+this.R,2) - Math.pow(win_w/2 - this.x,2) );
+                this.y = this.y < win_h/2 ? win_h/2 - y : win_h/2 + y;
             }
         }
-        if(this.y > win_h/2 - this.R + this.speed && this.y < win_h/2 + this.R - this.speed){
-            if(this.x > win_w/2 - this.R && this.x <win_w/2 ){
-                this.x =  win_w/2 - this.R
-            }
-            if(this.x > win_w/2 && this.x < win_w/2+this.R){
-                this.x = win_w/2 + this.R;
+        if(this.y > win_h/2 - this.R  && this.y < win_h/2 + this.R ){
+            var r = Math.sqrt(Math.pow(win_w/2 - this.x,2) + Math.pow(win_h/2 - this.y,2) );
+            if(r < this.r + this.R){
+                var x = Math.sqrt(Math.pow(this.r+this.R,2) - Math.pow(win_h/2 - this.y,2) );
+                this.x = this.x < win_w/2 ? win_w/2 - x : win_w/2 + x;
             }
         }
 

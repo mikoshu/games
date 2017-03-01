@@ -3,13 +3,13 @@ var star = function(){
 }
 
 star.prototype.init = function(){
-    this.r = 200;
-    this.width = 200;
-    this.height = 200;
+    this.r = 200*radio;
+    this.width = 200*radio;
+    this.height = 200*radio;
     this.x = win_w/2;
     this.y = win_h/2;
-    this.life = 150;
-    this.nowLife = 150;
+    this.life = 150*radio;
+    this.nowLife = 150*radio;
 }
 
 star.prototype.draw = function(){
@@ -34,7 +34,7 @@ star.prototype.drawLine = function(width,color){
     ctx.save()
     ctx.beginPath();
     ctx.strokeStyle = color;
-    ctx.lineWidth = 20;
+    ctx.lineWidth = 20 * radio;
     ctx.lineCap="round";
     ctx.moveTo(win_w/2 - this.life/2,win_h/2 - this.height/2 - 20);
     ctx.lineTo(win_w/2 - this.life/2 + width,win_h/2 - this.height/2 - 20);

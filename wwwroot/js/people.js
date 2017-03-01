@@ -3,31 +3,51 @@ var people = function(){
 }
 
 people.prototype.init = function(){
-    this.width = 100;
-    this.height = 100;
-    this.R = 200;
-    this.r = 50;
-    this.num = 5;
+    this.width = 100*radio;
+    this.height = 100*radio;
+    this.R = 200*radio;
+    this.r = 50*radio;
+    this.num = 2;
+    this.all = 30;
     this.x = [];
     this.y = [];
-    this.changeX = [];
+    this.changeX = []; // 记录鼠标位置
     this.changeY = [];
-    this.isTouch = [];
-    this.success = [];
+    this.isTouch = []; // 判断是否和人物碰撞
+    this.success = []; // 判断是否到达终点
+    this.count = [];  // 到达终点后计数\
+    this.attack = 10; // 攻击力
+    this.interval = 50; // 设置到达终点切未被打飞的小人每n帧攻击一次
     this.pre = 200;
     this.score = 0;
     this.getScort = 10;
 
-    for(var i=0;i<this.num; i++){
+    for(var i=0;i<this.all; i++){
         this.born(i);
     }
     //this.draw();
 }
 
+people.prototype.level = function(score){ // 难度设置
+    // if(this.score > 100 && this.sc ){ // 难度提升
+    //     this.num = 4;
+    //     this.pre = 200;
+    // }
+    if(score > 150){
+        this.num = parseInt(score/50);
+        this.pre -=  parseInt(score/1000);
+    } 
+    
+
+}
+
 people.prototype.draw = function(){
+
+    this.level(this.score); 
+
     for(var i=0;i<this.num;i++){
         ctx.drawImage(document.getElementById('me'),this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
-        //ctx.fillRect(this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
+        ctx.fillRect(this.changeX[i]-this.width/2,this.changeY[i]-this.height/2,this.width,this.height);
         this.boom(i);
         this.add(i);
         //console.log(this.changeX[i],)
@@ -54,6 +74,7 @@ people.prototype.born = function(i){
     this.changeY[i] = this.y[i];
     this.isTouch[i] = false; 
     this.success[i] = false;
+    this.count[i] = 0;
 }
 
 people.prototype.boom = function(i){
@@ -65,6 +86,7 @@ people.prototype.boom = function(i){
         if(!this.isTouch[i]){  // 获取得分
             this.score += this.getScort;
             document.getElementById('score').innerHTML = this.score;
+            shake(); // 震动
         }
         this.isTouch[i] = true;
     }
@@ -75,14 +97,20 @@ people.prototype.boom = function(i){
             this.changeY[i] += (win_h/2 - this.y[i])/this.pre;
         }else{
             if(!this.success[i]){
-                star.nowLife = star.nowLife > 10 ? star.nowLife - 10 : 0;
+                star.nowLife = star.nowLife > this.attack ? star.nowLife - this.attack : 0;
                 this.success[i] = true;
+            }else{
+                this.count[i] += 1;
+                if(this.count[i] == this.interval){
+                    this.count[i] = 0;
+                    star.nowLife = star.nowLife > this.attack ? star.nowLife - this.attack : 0;
+                }
             }
             
         }
     }else{
-        this.changeX[i] -= (win_w/2 - this.x[i])/this.pre*3;
-        this.changeY[i] -= (win_h/2 - this.y[i])/this.pre*3;
+        this.changeX[i] -= (win_w/2 - this.x[i])/this.pre*5;
+        this.changeY[i] -= (win_h/2 - this.y[i])/this.pre*5;
     }
 }
 

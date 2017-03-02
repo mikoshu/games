@@ -52,14 +52,13 @@ people.prototype.draw = function(){
     this.level(this.score); 
 
     for(var i=0;i<this.num;i++){
+        if(this.showBlood[i]){ // 先画血迹，避免血迹挡住人物
+            this.drowBlood(i,this.blood[i].x,this.blood[i].y);
+        }
         ctx.drawImage(this.img[i],parseInt(this.imgIndex[i]/this.pre)*this.width,0,this.width,this.height,this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
         //ctx.fillRect(this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
         this.boom(i);
         this.add(i);
-        if(this.showBlood[i]){
-            this.drowBlood(i,this.blood[i].x,this.blood[i].y);
-        }
-
         this.imgIndex[i] += 1;
         if(this.imgIndex[i] > 2*this.pre){
             this.imgIndex[i] = 0;

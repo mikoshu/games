@@ -3,8 +3,8 @@ var people = function(){
 }
 
 people.prototype.init = function(){
-    this.width = 100*radio;
-    this.height = 100*radio;
+    this.width = 85*radio;
+    this.height = 65*radio;
     this.R = 200*radio;
     this.r = 50*radio;
     this.num = 3;
@@ -24,6 +24,9 @@ people.prototype.init = function(){
     this.interval = 50; // 设置到达终点切未被打飞的小人每n帧攻击一次
     this.score = 0;
     this.getScort = 10;
+    this.pre = 15;
+    this.imgIndex = [];
+    this.img = [];
 
     for(var i=0;i<this.all; i++){
         this.born(i);
@@ -49,13 +52,19 @@ people.prototype.draw = function(){
     this.level(this.score); 
 
     for(var i=0;i<this.num;i++){
-        ctx.drawImage(document.getElementById('me'),this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
+        ctx.drawImage(this.img[i],parseInt(this.imgIndex[i]/this.pre)*this.width,0,this.width,this.height,this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
         //ctx.fillRect(this.x[i]-this.width/2,this.y[i]-this.height/2,this.width,this.height);
         this.boom(i);
         this.add(i);
         if(this.showBlood[i]){
             this.drowBlood(i,this.blood[i].x,this.blood[i].y);
         }
+
+        this.imgIndex[i] += 1;
+        if(this.imgIndex[i] > 2*this.pre){
+            this.imgIndex[i] = 0;
+        }
+
         //console.log(this.x[i],)
     }
     
@@ -71,8 +80,10 @@ people.prototype.born = function(i){
     var y = Math.random() - 0.5;
     if(y>0){
         this.y[i] = y*1500+win_h;
+        this.img[i] = document.getElementById('role2');
     }else{
-        this.y[i] = y*1500
+        this.y[i] = y*1500;
+        this.img[i] = document.getElementById('role');
     }
     this.speed[i] = {} // 每个人物速度不同 
     var interval = Math.random()*200 + this.baseSpeed; 
@@ -87,6 +98,7 @@ people.prototype.born = function(i){
     this.count[i] = 0;
     this.showBlood[i] = false;
     this.blood[i] = {};
+    this.imgIndex[i] = 0;
 }
 
 people.prototype.boom = function(i){
@@ -145,10 +157,18 @@ people.prototype.drowBlood = function(i,x,y){ // 绘制血迹
     var r = Math.sqrt(Math.pow(win_w/2-x,2) + Math.pow(win_h/2-y,2));
     var deg = Math.acos( (x - win_w/2)/r);
     deg = y < win_h/2 ? deg : -deg; // 判断血液溅射方向
+    if( (y > win_h/2 && x < win_w/2) || (y < win_h/2 && x > win_w/2) ){
+        x = x < win_w/2 ? x+this.width/2 : x-this.width/2;
+        y = y < win_h/2 ? y-this.height/2 : y+this.height/2;
+    }else{
+        x = x < win_w/2 ? x-this.width/2 : x+this.width/2;
+        y = y < win_h/2 ? y+this.height/2 : y-this.height/2;
+    }
+    
     ctx.save();
     ctx.translate(x,y);
     ctx.rotate(-deg);
-    ctx.drawImage(document.getElementById('blood'),0,0,80,30);
+    ctx.drawImage(document.getElementById('blood'),0,0,330,81);
     ctx.translate(0,0);
     ctx.restore();
 }

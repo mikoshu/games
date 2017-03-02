@@ -3,16 +3,18 @@ var me = function(){
 }
 
 me.prototype.init = function(){
-    this.r = 100*radio;
-    this.R = 150*radio;
-    this.width = 300*radio;
-    this.height = 300*radio;
+    this.r = 50*radio;
+    this.R = 100*radio;
+    this.width = 250*radio;
+    this.height = 200*radio;
     this.x = win_w/2;
     this.y = win_h/2 + this.r + this.height;
     this.speed = 20; // 规定移动速度
     this.toX = 0; // 记录到达下一地点x位置
     this.toY = 0; // 记录到达下一地点y位置
     this.isMove = false;
+    this.imgIndex = 0;
+    this.pre = 2; // 每隔两帧图片切换一次
     //this.draw();
 }
 
@@ -20,7 +22,11 @@ me.prototype.draw = function(){
     if(this.isMove){
         this.move();
     }
-    ctx.drawImage(document.getElementById('me'),this.x - this.width/2,this.y - this.height/2,this.width,this.height);
+    ctx.drawImage(document.getElementById('hit'),parseInt(this.imgIndex/this.pre)*this.width,0,this.width,this.height,this.x - this.width/2,this.y - this.height/2,this.width,this.height);
+    this.imgIndex += 1;
+    if(this.imgIndex > 7*this.pre){
+        this.imgIndex = 0;
+    }
 }
 
 me.prototype.move = function(){

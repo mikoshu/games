@@ -53,6 +53,9 @@
     <canvas id="canvas" ></canvas>
     <img id="bg" src="images/bg.jpg" style="display:none" alt="">
     <img id="me" src="images/me.png" style="display:none" alt="">
+    <img id="hit" src="images/hit.png" style="display:none" alt="">
+    <img id="role" src="images/role.png" style="display:none" alt="">
+    <img id="role2" src="images/role-b.png" style="display:none" alt="">
     <img id="star" src="images/star.png" style="display: none" alt="">
     <img id="blood" src="images/blood.png" style="display: none" alt="">
 

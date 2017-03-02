@@ -12,7 +12,7 @@ people.prototype.init = function(){
     this.x = [];
     this.y = [];
     this.speed = [];
-    this.baseSpeed = 300; // 基础速度，值越小，速度越快
+    this.baseSpeed = 400; // 基础速度，值越小，速度越快
     //this.x = []; // 记录鼠标位置x
     //this.y = []; // 记录鼠标位置y
     this.isTouch = []; // 判断是否和人物碰撞
@@ -38,7 +38,7 @@ people.prototype.level = function(score){ // 难度设置
     // }
     if(score > 150){
         this.num = parseInt(score/150) + 3;
-        this.baseSpeed =  300 - parseInt(score/200)*20;
+        this.baseSpeed =  400 - parseInt(score/200)*20;
     } 
     
 
@@ -64,15 +64,15 @@ people.prototype.draw = function(){
 people.prototype.born = function(i){
     var x = Math.random() - 0.5;
     if(x > 0){
-        this.x[i] = x * 200 +  win_w ;
+        this.x[i] = x * 1500 +  win_w ;
     }else{
-        this.x[i] = x * 200
+        this.x[i] = x * 1500
     }
     var y = Math.random() - 0.5;
     if(y>0){
-        this.y[i] = y*200+win_h;
+        this.y[i] = y*1500+win_h;
     }else{
-        this.y[i] = y*200
+        this.y[i] = y*1500
     }
     this.speed[i] = {} // 每个人物速度不同 
     var interval = Math.random()*200 + this.baseSpeed; 

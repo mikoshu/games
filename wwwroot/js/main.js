@@ -42,8 +42,8 @@
         draw_bg();
         Me.draw();
         star.draw();
-        star.lose();
         people.draw();
+        
         if(isPlaying && typeof(requestAnimationFrame) == 'function' ){
             timmer = requestAnimationFrame(loop);
         }

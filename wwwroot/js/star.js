@@ -28,6 +28,7 @@ star.prototype.draw = function(){
 
     this.drawLine(this.life,'#666');
     this.drawLine(this.nowLife,'rgba(255,255,255,1)');
+    this.lose();
 }
 
 star.prototype.drawLine = function(width,color){
@@ -35,7 +36,9 @@ star.prototype.drawLine = function(width,color){
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.lineWidth = 20 * radio;
-    ctx.lineCap="round";
+    if(width != 0){
+        ctx.lineCap="round";
+    }
     ctx.moveTo(win_w/2 - this.life/2,win_h/2 - this.height/2 - 20);
     ctx.lineTo(win_w/2 - this.life/2 + width,win_h/2 - this.height/2 - 20);
     ctx.fill();
@@ -49,6 +52,6 @@ star.prototype.lose = function(){
         alert('YOU LOSE !');
         //console.log(timmer)
         //cancelAnimationFrame(timmer);
-        reset();
+        reset(); // 重新开始
     }
 }

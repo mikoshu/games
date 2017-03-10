@@ -54,7 +54,7 @@
     <canvas id="canvas" >纳尼？！！你的浏览器不支持canvas？你该换浏览器啦！</canvas>
     <img id="bg" src="images/bg.jpg" style="display:none" alt="">
     <img id="me" src="images/me.png" style="display:none" alt="">
-    <img id="hit" src="images/xin2.png" style="display:none" alt="">
+    <img id="hit" src="images/hit.png" style="display:none" alt="">
     <img id="role" src="images/role.png" style="display:none" alt="">
     <img id="role2" src="images/role-b.png" style="display:none" alt="">
     <img id="star" src="images/star.png" style="display: none" alt="">

@@ -16,7 +16,7 @@
     var radio = 1;
 
 
-    if(typeof(requestAnimationFrame) == 'undefined'){
+    if(typeof(requestAnimationFrame) == 'undefined'){ // 手机不支持requestAnimationFrame时将画布整体大小缩小一半
         radio = 0.5;
         win_w = window.innerWidth*radio;
         win_h = window.innerHeight*radio;
@@ -49,8 +49,8 @@
         }
     }
 
-    if(typeof(requestAnimationFrame) == 'undefined' && isPlaying){
-        timmer = setInterval(loop,20);
+    if(typeof(requestAnimationFrame) == 'undefined' && isPlaying){ 
+        timmer = setInterval(loop,20);// 手机不支持requestAnimationFrame时用setInterval替代此时为了更好的渲染效果将画布整体大小缩小一半（不然卡到死）
     }
 
     

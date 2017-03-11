@@ -31,7 +31,7 @@ star.prototype.draw = function(){
     this.lose();
 }
 
-star.prototype.drawLine = function(width,color){
+star.prototype.drawLine = function(width,color){ // 绘制血条
     ctx.save()
     ctx.beginPath();
     ctx.strokeStyle = color;
@@ -50,8 +50,6 @@ star.prototype.drawLine = function(width,color){
 star.prototype.lose = function(){
     if(this.nowLife == 0){
         alert('YOU LOSE !');
-        //console.log(timmer)
-        //cancelAnimationFrame(timmer);
         reset(); // 重新开始
     }
 }
